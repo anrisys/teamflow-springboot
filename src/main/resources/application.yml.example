@@ -1,0 +1,14 @@
+# Copy this to application.yml and customize for your local environment
+
+spring:
+  profiles:
+    active: dev
+    include: common
+  
+  datasource:
+    username: your_postgres_username
+    password: your_postgres_password
+
+app:
+  jwt:
+    secret: "your-local-jwt-secret-key-change-this-in-production"
