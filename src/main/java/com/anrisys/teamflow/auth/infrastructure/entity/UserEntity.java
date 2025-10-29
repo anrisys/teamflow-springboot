@@ -1,9 +1,12 @@
 package com.anrisys.teamflow.auth.infrastructure.entity;
 
 import java.time.Instant;
+import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -11,8 +14,12 @@ import jakarta.persistence.Table;
 @Table(name = "users")
 public class UserEntity {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
 	private Integer userId;
+	
+	@Column(name= "public_id", nullable = false, updatable = false)
+	private UUID publicId; 
 
 	@Column(unique = true, nullable = false)
 	private String email;
@@ -27,13 +34,20 @@ public class UserEntity {
 		super();
 	}
 	
-	public UserEntity(Integer userId, String email, String hashPassword, Instant createdAt) {
-		super();
-		this.userId = userId;
-		this.email = email;
-		this.hashPassword = hashPassword;
-		this.createdAt = createdAt;
-	}
+    public UserEntity(UUID publicId, String email, String hashPassword, Instant createdAt) {
+        this.publicId = publicId;
+        this.email = email;
+        this.hashPassword = hashPassword;
+        this.createdAt = createdAt;
+    }
+
+    public UUID getPublicId() {
+    	return publicId;
+    }
+    
+    public void setPublicId(UUID publicId) {
+    	this.publicId = publicId;
+    }
 
 	public Integer getUserId() {
 		return userId;
