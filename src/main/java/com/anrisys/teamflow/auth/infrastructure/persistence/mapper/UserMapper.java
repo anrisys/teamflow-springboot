@@ -20,7 +20,9 @@ public class UserMapper {
 				entity.getPublicId().toString(),
 				entity.getEmail(),
 				entity.getHashPassword(),
-				entity.getCreatedAt()
+				entity.getCreatedAt(),
+				entity.getRefreshTokenHash(),
+				entity.getRefreshTokenExpiresAt()
 		);
 	}
 }

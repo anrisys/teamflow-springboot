@@ -17,9 +17,9 @@ public class UserEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
 	private Integer userId;
-	
-	@Column(name= "public_id", nullable = false, updatable = false)
-	private UUID publicId; 
+
+	@Column(name = "public_id", nullable = false, updatable = false)
+	private UUID publicId;
 
 	@Column(unique = true, nullable = false)
 	private String email;
@@ -27,27 +27,33 @@ public class UserEntity {
 	@Column(name = "hash_password", nullable = false)
 	private String hashPassword;
 
+	@Column(name = "refresh_token_hash")
+	private String refreshTokenHash;
+
+	@Column(name = "refresh_token_expires_at")
+	private Instant refreshTokenExpiresAt;
+
 	@Column(name = "created_at", nullable = false, updatable = false)
 	private Instant createdAt;
 
 	public UserEntity() {
 		super();
 	}
-	
-    public UserEntity(UUID publicId, String email, String hashPassword, Instant createdAt) {
-        this.publicId = publicId;
-        this.email = email;
-        this.hashPassword = hashPassword;
-        this.createdAt = createdAt;
-    }
 
-    public UUID getPublicId() {
-    	return publicId;
-    }
-    
-    public void setPublicId(UUID publicId) {
-    	this.publicId = publicId;
-    }
+	public UserEntity(UUID publicId, String email, String hashPassword, Instant createdAt) {
+		this.publicId = publicId;
+		this.email = email;
+		this.hashPassword = hashPassword;
+		this.createdAt = createdAt;
+	}
+
+	public UUID getPublicId() {
+		return publicId;
+	}
+
+	public void setPublicId(UUID publicId) {
+		this.publicId = publicId;
+	}
 
 	public Integer getUserId() {
 		return userId;
@@ -73,11 +79,27 @@ public class UserEntity {
 		this.hashPassword = hashPassword;
 	}
 
+	public String getRefreshTokenHash() {
+		return refreshTokenHash;
+	}
+
+	public void setRefreshTokenHash(String refreshTokenHash) {
+		this.refreshTokenHash = refreshTokenHash;
+	}
+
+	public Instant getRefreshTokenExpiresAt() {
+		return refreshTokenExpiresAt;
+	}
+
+	public void setRefreshTokenExpiresAt(Instant refreshTokenExpiresAt) {
+		this.refreshTokenExpiresAt = refreshTokenExpiresAt;
+	}
+
 	public Instant getCreatedAt() {
 		return createdAt;
 	}
 
 	public void setCreatedAt(Instant createdAt) {
 		this.createdAt = createdAt;
-	}	
+	}
 }

@@ -1,6 +1,8 @@
 package com.anrisys.teamflow.auth.infrastructure.persistence;
 
+import java.time.Instant;
 import java.util.Optional;
+import java.util.UUID;
 
 import com.anrisys.teamflow.auth.domain.model.User;
 import com.anrisys.teamflow.auth.domain.repository.AuthRepository;
@@ -32,6 +34,34 @@ public class JpaAuthRepository implements AuthRepository {
 	@Override
 	public boolean existsByEmail(String email) {
 		return springDataAuthRepository.existsByEmail(email);
+	}
+
+	@Override
+	public Optional<User> findById(String userId) {
+		return springDataAuthRepository.findByPublicId(UUID.fromString(userId)).map(mapper::toDomain);
+	}
+
+	@Override
+	public Optional<User> findByRefreshTokenHash(String refreshTokenHash) {
+		return springDataAuthRepository.findByRefreshTokenHash(refreshTokenHash).map(mapper::toDomain);
+	}
+
+	@Override
+	public void updateRefreshToken(String userId, String refreshTokenHash, Instant expiresAt) {
+        springDataAuthRepository.findByPublicId(UUID.fromString(userId)).ifPresent(userEntity -> {
+            userEntity.setRefreshTokenHash(refreshTokenHash);
+            userEntity.setRefreshTokenExpiresAt(expiresAt);
+            springDataAuthRepository.save(userEntity);
+        });
+	}
+
+	@Override
+	public void clearRefreshToken(String userId) {
+        springDataAuthRepository.findByPublicId(UUID.fromString(userId)).ifPresent(userEntity -> {
+            userEntity.setRefreshTokenHash(null);
+            userEntity.setRefreshTokenExpiresAt(null);
+            springDataAuthRepository.save(userEntity);
+        });
 	}
 
 }
